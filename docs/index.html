@@ -114,7 +114,7 @@
 
       .commands {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
       }
 
@@ -226,6 +226,12 @@
         font-weight: 750;
       }
 
+      @media (max-width: 1100px) {
+        .commands {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
       @media (max-width: 860px) {
         main {
           width: min(100% - 24px, 680px);
@@ -289,23 +295,34 @@
             <span class="shell">Terminal</span>
           </div>
           <pre><code>cd /Users/ruturaj_vasant/Downloads/Distributed_AI_Training
-source .venv/bin/activate
-
-./leader_macos.sh \
-  --host 0.0.0.0 \
-  --mode distributed \
-  --dist-master-addr leader-macbook-pro.taila5426e.ts.net \
-  --dist-port 29501</code></pre>
+./leader_macos.sh --mode federated --host 0.0.0.0</code></pre>
           <p class="panel-note">
             In the leader terminal, use <code>workers</code> to see joined
-            workers, <code>start 5</code> to run 5 epochs, or
-            <code>start epochs=5 batches=100 lr=0.03</code> for a federated run.
+            workers, <code>start</code> to run with default epochs, or
+            <code>start epochs=5 batches=200 lr=0.05</code> to override per-run.
+            Once all workers have joined, type <code>start</code> to begin.
           </p>
         </article>
       </section>
 
       <section class="commands" aria-label="Worker setup commands">
         <h2 class="section-title">Workers</h2>
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Local test (same Mac)</h2>
+            <span class="shell">Terminal</span>
+          </div>
+          <pre><code>cd /Users/ruturaj_vasant/Downloads/Distributed_AI_Training
+LEADER_HOST=127.0.0.1 LEADER_PORT=8787 \
+  .venv/bin/python -m dml_cluster.worker \
+  --leader 127.0.0.1 \
+  --port 8787</code></pre>
+          <p class="panel-note">
+            Run this in a second terminal on the same machine to test without
+            any remote workers. The venv must already exist (run
+            <code>./leader_macos.sh</code> once to create it).
+          </p>
+        </article>
         <article class="panel">
           <div class="panel-head">
             <h2>macOS</h2>
